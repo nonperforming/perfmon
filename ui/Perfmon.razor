@@ -9,11 +9,30 @@
 
 @if (draw)
 {
+  @if (drawPing)
+  {
+    <text><style>
+      .perfmon {
+        height: 6vh
+      }
+    </style></text>
+  }
+  else
+  {
+    <text><style>
+      .perfmon {
+        height: 3vh
+      }
+    </style></text>
+  }
   <root class="perfmon">
-    <div class="fps @FPSStatus">
-      <p>@fps fps / @ms ms</p>
-    </div>
-    @if (ping != -1)
+    @if (drawFPS)
+    {
+      <div class="fps @FPSStatus">
+        <p>@fps fps / @ms ms</p>
+      </div>
+    }
+    @if (ping != -1 && drawPing)
     {
       <div class="ping @PingStatus">
         <p>@ping ms</p>
@@ -27,22 +46,25 @@
   public readonly IClient? client;
   public bool draw = true;
 
+  public bool drawFPS = true;
+  public bool drawPing = false;
+
   private string FPSStatus
   {
     get
     {
-      if (fps >= 60) return "green";
-      if (fps >= 30) return "orange";
-      else return "red";
+      if (fps >= 60) return "green"; // FPS 60+
+      if (fps >= 30) return "orange"; // FPS 30-59
+      else return "red"; // FPS < 29
     }
   }
   private string PingStatus
   {
     get
     {
-      if (ping <= 50) return "green";
-      if (ping <= 300) return "orange";
-      else return "red";
+      if (ping <= 50) return "green"; // Ping 0-50
+      if (ping <= 300) return "orange"; // Ping 51-300
+      else return "red"; // Ping 300+
     }
   }
 
@@ -54,9 +76,11 @@
   private float deltaBetweenUpdates;
   private int framesBetweenUpdates;
 
-  public Perfmon(bool draw = true, IClient client = null, float updateRate = 1f)
+  public Perfmon(bool draw = true, bool drawFPS = true, bool drawPing = false, IClient client = null, float updateRate = 1f)
   {
     this.draw = draw;
+    this.drawFPS = drawFPS;
+    this.drawPing = drawPing;
     this.client = client;
     this.updateRate = updateRate;
     // RenderedManually = true; // Only for RootPanel

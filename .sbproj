@@ -7,7 +7,7 @@
   "Schema": 1,
   "HasAssets": true,
   "AssetsPath": "",
-  "Resources": "/fonts/*\n/ui/*",
+  "Resources": "/fonts/*\n/ui/*\n!/logo.*",
   "MenuResources": null,
   "HasCode": true,
   "CodePath": ".",

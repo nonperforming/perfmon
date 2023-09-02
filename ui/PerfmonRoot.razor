@@ -8,11 +8,11 @@
 
 @code
 {
-  public PerfmonRoot(bool draw = true, IClient client = null, float updateRate = 1f)
+  public PerfmonRoot(bool draw = true, bool drawFPS = true, bool drawPing = false, IClient client = null, float updateRate = 1f)
   {
     RenderedManually = true; // Only for RootPanel
     Scale = 1; // Only for RootPanel
 
-    AddChild(new Perfmon(draw, client, updateRate));
+    AddChild(new Perfmon(draw, drawFPS, drawPing, client, updateRate));
   }
 }
