@@ -1,0 +1,28 @@
+{
+  "Title": "perfmon",
+  "Type": "library",
+  "Org": "nfm",
+  "Ident": "perfmon",
+  "Tags": null,
+  "Schema": 1,
+  "HasAssets": true,
+  "AssetsPath": "",
+  "Resources": null,
+  "MenuResources": null,
+  "HasCode": true,
+  "CodePath": ".",
+  "PackageReferences": [],
+  "EditorReferences": null,
+  "Metadata": {
+    "ProjectTemplate": null,
+    "CsProjName": "",
+    "Compiler": {
+      "RootNamespace": "Sandbox",
+      "DefineConstants": "SANDBOX;ADDON;DEBUG",
+      "NoWarn": "1701;1702;1591;",
+      "WarningsAsErrors": "",
+      "References": [],
+      "DistinctReferences": []
+    }
+  }
+}

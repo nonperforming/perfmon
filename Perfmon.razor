@@ -1,0 +1,63 @@
+﻿@using System;
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits Panel
+@attribute [StyleSheet]
+
+@namespace Perfmon
+
+<root class="perfmon">
+  <div class="fps @FPSStatus">
+    <p>@fps fps / @ms ms</p>
+  </div>
+</root>
+
+@code
+{
+  string FPSStatus
+  {
+    get
+    {
+      if (fps >= 60) return "green";
+      if (fps >= 30) return "orange";
+      else return "red";
+    }
+  }
+
+  float fps;
+  float ms;
+
+  float updateRate = 1f;
+  float deltaBetweenUpdates;
+  int framesBetweenUpdates;
+
+  public Perfmon()
+  {
+    // RenderedManually = true; // Only for RootPanel
+    // Scale = 1; // Only for RootPanel
+  }
+
+  [Sandbox.GameEvent.Client.FrameAttribute]
+  void NewFrame()
+  {
+    deltaBetweenUpdates += Time.Delta;
+    framesBetweenUpdates++;
+
+    if (deltaBetweenUpdates > 1 / updateRate)
+    {
+      //Log.Info("Updating FPS meter");
+
+      // Update FPS meter
+      fps = (float)Math.Round(framesBetweenUpdates / deltaBetweenUpdates, 2, MidpointRounding.AwayFromZero);
+      ms = (float)Math.Round(deltaBetweenUpdates / framesBetweenUpdates * 1000f, 2, MidpointRounding.AwayFromZero);
+
+      // Reset counters
+      deltaBetweenUpdates = 0;
+      framesBetweenUpdates = 0;
+
+      // Invalidate Panel
+      StateHasChanged();
+    }
+  }
+}
