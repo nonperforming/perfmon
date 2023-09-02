@@ -7,15 +7,27 @@
 
 @namespace Perfmon
 
-<root class="perfmon">
-  <div class="fps @FPSStatus">
-    <p>@fps fps / @ms ms</p>
-  </div>
-</root>
+@if (draw)
+{
+  <root class="perfmon">
+    <div class="fps @FPSStatus">
+      <p>@fps fps / @ms ms</p>
+    </div>
+    @if (ping != -1)
+    {
+      <div class="ping @PingStatus">
+        <p>@ping ms</p>
+      </div>
+    }
+  </root>
+}
 
 @code
 {
-  string FPSStatus
+  public readonly IClient? client;
+  public bool draw = true;
+
+  private string FPSStatus
   {
     get
     {
@@ -24,16 +36,29 @@
       else return "red";
     }
   }
-
-  float fps;
-  float ms;
-
-  float updateRate = 1f;
-  float deltaBetweenUpdates;
-  int framesBetweenUpdates;
-
-  public Perfmon()
+  private string PingStatus
   {
+    get
+    {
+      if (ping <= 50) return "green";
+      if (ping <= 300) return "orange";
+      else return "red";
+    }
+  }
+
+  public float fps { get; private set; }
+  public float ms { get; private set; }
+  float ping { get { if (client == null) return -1f; return client.Ping; } }
+
+  public float updateRate = 1f;
+  private float deltaBetweenUpdates;
+  private int framesBetweenUpdates;
+
+  public Perfmon(bool draw = true, IClient client = null, float updateRate = 1f)
+  {
+    this.draw = draw;
+    this.client = client;
+    this.updateRate = updateRate;
     // RenderedManually = true; // Only for RootPanel
     // Scale = 1; // Only for RootPanel
   }

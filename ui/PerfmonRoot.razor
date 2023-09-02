@@ -1,0 +1,18 @@
+﻿@using System;
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits RootPanel
+
+@namespace Perfmon
+
+@code
+{
+  public PerfmonRoot(bool draw = true, IClient client = null, float updateRate = 1f)
+  {
+    RenderedManually = true; // Only for RootPanel
+    Scale = 1; // Only for RootPanel
+
+    AddChild(new Perfmon(draw, client, updateRate));
+  }
+}
